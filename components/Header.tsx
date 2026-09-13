@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Settings, Sparkles } from "lucide-react";
+import { Settings, Sparkles, ArrowUpRight } from "lucide-react";
 
 interface HeaderProps {
   hasCustomKey: boolean;
@@ -15,12 +15,12 @@ export const Header: React.FC<HeaderProps> = ({ hasCustomKey, onOpenSettings }) 
         {/* Brand & Logo matching sumitkt.com */}
         <div className="flex items-center space-x-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-950 text-white font-mono font-black text-sm shadow-xs">
-            CP
+            DS
           </div>
           <div>
             <div className="flex items-center space-x-2">
               <h1 className="font-sans text-base sm:text-lg font-black tracking-tight text-slate-950 uppercase">
-                CORRIDORPULSE
+                DEAL SCREENER
               </h1>
               <span className="hidden sm:inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-700 border border-slate-200">
                 Pre-IC Engine
@@ -34,8 +34,19 @@ export const Header: React.FC<HeaderProps> = ({ hasCustomKey, onOpenSettings }) 
 
         {/* Status & Actions */}
         <div className="flex items-center space-x-2.5 sm:space-x-3">
+          {/* Link to sumitkt.com */}
+          <a
+            href="https://www.sumitkt.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center space-x-1 rounded-full border border-slate-300/80 bg-white px-3 py-1 text-xs font-semibold text-slate-700 hover:border-slate-900 hover:text-slate-950 hover:bg-slate-50 transition-all shadow-xs"
+          >
+            <span className="font-mono text-[11px] uppercase tracking-wider">sumitkt.com</span>
+            <ArrowUpRight className="h-3 w-3 text-slate-400" />
+          </a>
+
           {/* Active Model Indicator in sumitkt.com pill style */}
-          <div className="flex items-center space-x-2 rounded-full border border-slate-300/80 bg-white/90 px-3 py-1 font-mono text-[11px] font-semibold text-slate-800 tracking-wider uppercase shadow-xs">
+          <div className="hidden sm:flex items-center space-x-2 rounded-full border border-slate-300/80 bg-white/90 px-3 py-1 font-mono text-[11px] font-semibold text-slate-800 tracking-wider uppercase shadow-xs">
             <Sparkles className="h-3 w-3 text-[#b89047]" />
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span className="hidden md:inline">Gemini 3.6</span>

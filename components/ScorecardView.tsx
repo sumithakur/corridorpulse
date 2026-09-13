@@ -547,7 +547,7 @@ ${thesisFit.directivesCompliance.map((d) => `- [${d.compliant ? "COMPLIANT" : "B
 
         {/* FOOTER METADATA */}
         <div className="border-t border-slate-200 pt-4 flex flex-wrap items-center justify-between text-[10px] font-mono uppercase tracking-widest text-slate-500">
-          <span>CORRIDORPULSE DEAL SCREENER • PRE-IC MEMO • CONFIDENTIAL</span>
+          <span>DEAL SCREENER • PRE-IC MEMO • CONFIDENTIAL</span>
           <span>EVALUATED AT: {new Date().toLocaleDateString()}</span>
         </div>
       </div>

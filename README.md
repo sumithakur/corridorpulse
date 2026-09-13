@@ -1,7 +1,7 @@
-# CorridorPulse ⚡
-### Institutional DeepTech & Sovereign VC Deal Screener
+# Deal Screener ⚡
+### Institutional VC & Pilot Readiness Scorecard
 
-**CorridorPulse** is an institutional venture capital diligence and deal screening platform. It evaluates early-stage startups, cross-border deeptech ventures, and sovereign pilot deployments (with specialized alignment for GCC, India, and Global mandates) against dynamic, user-configurable investment theses.
+**Deal Screener** is an institutional venture capital diligence and deal screening platform. It evaluates early-stage startups, cross-border deeptech ventures, and sovereign pilot deployments against dynamic, user-configurable investment theses.
 
 ---
 
