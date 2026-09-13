@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@layer utilities {
+  /* Print Optimization Styles */
+  @media print {
+    body {
+      background-color: white !important;
+      color: black !important;
+      font-size: 11pt !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .no-print {
+      display: none !important;
+    }
+
+    header, footer, nav {
+      display: none !important;
+    }
+
+    #printable-scorecard {
+      background: white !important;
+      color: black !important;
+      box-shadow: none !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      width: 100% !important;
+    }
+
+    /* Keep background colors printable */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+}

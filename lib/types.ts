@@ -1,0 +1,77 @@
+export type RecommendationType = "Proceed to Diligence" | "Conditional Pilot Only" | "Pass";
+export type VerdictType = "Strong" | "Moderate" | "Critical Risk";
+export type DataResidencyFriction = "Low" | "Medium" | "High";
+export type ThesisFitVerdict = "High Alignment" | "Moderate Fit" | "Misaligned";
+
+export interface ThesisConfig {
+  presetId: string;
+  presetName: string;
+  targetDeploymentRegions: string[];
+  sourcingRndOrigin: string;
+  targetStage: string;
+  coreSectorFocus: string[];
+  techDepthHurdle: string;
+  strategicMandate: string;
+  minTargetGrossMargin: number;
+  diligenceStrictness: number; // 1 (Lenient) to 5 (Ruthless IC)
+  customDirectives: string;
+}
+
+export interface DirectiveComplianceItem {
+  directive: string;
+  compliant: boolean;
+  analysis: string;
+}
+
+export interface ThesisFit {
+  matchScore: number; // 0-100%
+  verdict: ThesisFitVerdict;
+  alignmentSummary: string;
+  directivesCompliance: DirectiveComplianceItem[];
+}
+
+export interface CompanyProfile {
+  name: string;
+  oneLiner: string;
+  hqLocation: string;
+  primarySector: string;
+  stage: string;
+}
+
+export interface OverallAssessment {
+  score: number; // 0-100
+  recommendation: RecommendationType;
+  summaryRationale: string;
+}
+
+export interface EvaluationPillar {
+  pillarName: "Mandate & Thesis Alignment" | "Technical & IP Defensibility" | "Operational & Deployment Viability" | "Unit Economics & BOM Feasibility";
+  score: number; // 0-25
+  verdict: VerdictType;
+  findings: string[];
+}
+
+export interface GccPilotFit {
+  targetSectors: string[];
+  dataResidencyFriction: DataResidencyFriction;
+  potentialRegionalPartners: string[];
+}
+
+export interface EvaluationResult {
+  companyProfile: CompanyProfile;
+  overallAssessment: OverallAssessment;
+  thesisFit: ThesisFit;
+  evaluationPillars: EvaluationPillar[];
+  gccPilotFit: GccPilotFit;
+  redFlags: string[];
+  keyQuestionsForFounder: string[];
+  evaluatedThesis?: ThesisConfig;
+}
+
+export interface EvaluateRequestPayload {
+  inputText: string;
+  inputType: "pdf" | "text" | "url";
+  sourceName?: string;
+  customApiKey?: string;
+  thesisConfig?: ThesisConfig;
+}
