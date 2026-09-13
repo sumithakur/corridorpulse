@@ -7,6 +7,7 @@ import { IngestionForm } from "@/components/IngestionForm";
 import { ScorecardView } from "@/components/ScorecardView";
 import { EvaluationResult, ThesisConfig } from "@/lib/types";
 import { DEFAULT_THESIS_CONFIG } from "@/lib/thesisPresets";
+import { SAMPLE_DEAL_MEMO } from "@/lib/sampleData";
 
 const LOCAL_KEY_STORAGE = "DEAL_SCREENER_GEMINI_KEY";
 
@@ -34,6 +35,14 @@ export default function Home() {
         localStorage.removeItem(LOCAL_KEY_STORAGE);
       }
     }
+  };
+
+  // Dedicated Sample Evaluation handler: Bypasses API key validation and /api/evaluate network calls completely
+  const handleViewSampleEvaluation = () => {
+    setEvaluationResult(SAMPLE_DEAL_MEMO);
+    setErrorMessage(null);
+    setIsRateLimited(false);
+    setIsModalOpen(false);
   };
 
   const handleEvaluate = async (
@@ -126,6 +135,7 @@ export default function Home() {
         ) : (
           <IngestionForm
             onEvaluate={handleEvaluate}
+            onViewSampleEvaluation={handleViewSampleEvaluation}
             isLoading={isLoading}
             errorMessage={errorMessage}
             thesisConfig={thesisConfig}
@@ -144,6 +154,7 @@ export default function Home() {
         apiKey={apiKey}
         onSaveKey={handleSaveApiKey}
         rateLimitExceeded={isRateLimited}
+        onViewSampleEvaluation={handleViewSampleEvaluation}
       />
     </div>
   );

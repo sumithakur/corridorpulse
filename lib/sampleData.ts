@@ -40,3 +40,102 @@ TEAM:
 ASK & GOAL FOR GCC PILOT:
 - Raising $8M Series A to build an Abu Dhabi assembly & R&D facility, obtain GCC sovereign data security clearances, and deploy 30 autonomous inspection crawlers across ADNOC & Aramco pilot zones.
 `.trim();
+
+import { EvaluationResult } from "./types";
+import { THESIS_PRESETS } from "./thesisPresets";
+
+export const SAMPLE_DEAL_MEMO: EvaluationResult = {
+  companyProfile: {
+    name: "AeroEdge Dynamics",
+    oneLiner: "Autonomous edge-AI robotics for harsh industrial pipeline inspection.",
+    hqLocation: "Bengaluru, India / Doha, Qatar",
+    primarySector: "Edge AI & Robotics",
+    stage: "Seed",
+  },
+  overallAssessment: {
+    score: 84,
+    recommendation: "Proceed to Intro Call",
+    summaryRationale: "Proprietary on-device computer vision inspection robot with demonstrated IP defensibility. Direct alignment with GCC energy corridor mandates, though customer concentration in pilot stage remains a key diligence item.",
+  },
+  executiveSummary: "AeroEdge Dynamics builds autonomous, thermal-resistant edge-AI robotics designed for harsh pipeline and industrial energy infrastructure inspection. Operating without GPS or cloud dependency, their proprietary inspection crawler delivers high-frequency non-destructive testing in extreme thermal environments.",
+  keyHighlights: [
+    "Proprietary SLAM and edge-inference firmware operating without cloud connectivity or GPS.",
+    "Fast payback period with hardware CapEx fully recovered within 4 months of enterprise leasing.",
+    "Two provisional patents filed protecting heat-resistant sensor payload chassis up to 60°C.",
+  ],
+  keyRisksAndGaps: [
+    "Pilot concentration: 70% of current revenue pipeline tied to single NOC trial.",
+    "Hardware supply chain dependencies on single-source specialized optics with long lead times.",
+    "Requires local field maintenance teams and support infrastructure across GCC desert deployments.",
+  ],
+  partnerCallQuestions: [
+    "What is your hardware unit cost (BOM) at 50 units vs. 500 units?",
+    "How do thermal limits perform during continuous operation at 50°C+ ambient temperatures?",
+    "What is the deployment timeline from arrival on-site to fully autonomous data collection?",
+  ],
+  thesisFit: {
+    matchScore: 88,
+    verdict: "High Alignment",
+    alignmentSummary: "Strong alignment with sovereign infrastructure protection and edge-AI autonomy mandates across the GCC and India.",
+    directivesCompliance: [
+      {
+        directive: "Edge AI & Sovereign Industrial Infrastructure",
+        compliant: true,
+        analysis: "Air-gapped operation and on-device compute eliminate data residency barriers and support critical infrastructure inspection.",
+      },
+    ],
+  },
+  evaluationPillars: [
+    {
+      pillarName: "Strategic & Market Alignment",
+      score: 22,
+      verdict: "Strong",
+      findings: [
+        "Strong fit for sovereign infrastructure mandates and harsh environmental inspection.",
+        "Targeting a multi-billion dollar brownfield energy asset inspection market.",
+      ],
+    },
+    {
+      pillarName: "Technical & IP Defensibility",
+      score: 23,
+      verdict: "Strong",
+      findings: [
+        "Proprietary SLAM and edge-inference firmware operating without cloud connectivity.",
+        "2 provisional patents filed on heat-resistant sensor payload chassis.",
+      ],
+    },
+    {
+      pillarName: "Operational Viability",
+      score: 19,
+      verdict: "Moderate",
+      findings: [
+        "Requires local field maintenance teams across GCC desert deployments.",
+        "Zero data residency friction due to 100% on-prem / air-gapped data logging.",
+      ],
+    },
+    {
+      pillarName: "Unit Economics & Commercial Traction",
+      score: 20,
+      verdict: "Moderate",
+      findings: [
+        "Hardware CapEx recovered within 4 months of enterprise leasing.",
+        "High reliance on initial 2 pilot partners; expansion pipeline needs verification.",
+      ],
+    },
+  ],
+  gccPilotFit: {
+    targetSectors: ["Oil & Gas Infrastructure", "Desalination & Utilities", "Maritime Logistics"],
+    dataResidencyFriction: "Low",
+    potentialRegionalPartners: ["QatarEnergy", "Milaha", "Aramco", "ADNOC"],
+  },
+  redFlags: [
+    "Pilot concentration: 70% of current revenue pipeline tied to single NOC trial.",
+    "Hardware supply chain dependencies on single-source specialized optics.",
+  ],
+  keyQuestionsForFounder: [
+    "What is your hardware unit cost (BOM) at 50 units vs. 500 units?",
+    "How do thermal limits perform during continuous operation at 50°C+ ambient temperatures?",
+    "What is the deployment timeline from arrival on-site to fully autonomous data collection?",
+  ],
+  evaluatedThesis: THESIS_PRESETS["preset-india-gcc"] || THESIS_PRESETS["preset-general"],
+};

@@ -23,6 +23,7 @@ interface IngestionFormProps {
     sourceName?: string,
     thesisConfig?: ThesisConfig
   ) => void;
+  onViewSampleEvaluation: () => void;
   isLoading: boolean;
   errorMessage?: string | null;
   thesisConfig: ThesisConfig;
@@ -31,6 +32,7 @@ interface IngestionFormProps {
 
 export const IngestionForm: React.FC<IngestionFormProps> = ({
   onEvaluate,
+  onViewSampleEvaluation,
   isLoading,
   errorMessage,
   thesisConfig,
@@ -122,6 +124,18 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
         <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-600 font-editorial italic leading-relaxed">
           Bridge the gap between raw startup collateral and institutional-grade investment committee memos. Evaluated dynamically against user-defined thesis constraints.
         </p>
+
+        {/* Quick Sample Action */}
+        <div className="pt-1 flex flex-wrap items-center justify-center gap-2">
+          <button
+            type="button"
+            onClick={onViewSampleEvaluation}
+            className="inline-flex items-center space-x-2 rounded-full border border-slate-300/90 bg-white px-4 py-1.5 text-xs font-mono font-bold uppercase tracking-wider text-slate-800 hover:border-slate-900 hover:text-slate-950 hover:bg-slate-50 transition-all shadow-xs cursor-pointer"
+          >
+            <Sparkles className="h-3.5 w-3.5 text-[#b89047]" />
+            <span>View Sample Evaluation (No API Key Required)</span>
+          </button>
+        </div>
       </div>
 
       {/* 1. Thesis Configuration Panel */}
@@ -176,15 +190,25 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
             </button>
           </div>
 
-          {/* Sample Deck Loader Button */}
-          <button
-            type="button"
-            onClick={handleLoadSample}
-            className="w-full sm:w-auto flex items-center justify-center space-x-1.5 rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-xs font-mono uppercase tracking-wider text-slate-700 hover:border-slate-900 hover:text-slate-950 transition-all shadow-xs cursor-pointer"
-          >
-            <Sparkles className="h-3 w-3 text-[#b89047]" />
-            <span>{isSampleLoaded ? "✓ Sample Loaded" : "Load Sample Notes"}</span>
-          </button>
+          {/* Sample Actions */}
+          <div className="flex items-center space-x-2 w-full sm:w-auto justify-end">
+            <button
+              type="button"
+              onClick={onViewSampleEvaluation}
+              className="flex items-center space-x-1.5 rounded-full border border-slate-900 bg-slate-950 px-3.5 py-1.5 text-xs font-mono font-bold uppercase tracking-wider text-white hover:bg-slate-800 transition-all shadow-xs cursor-pointer"
+            >
+              <Sparkles className="h-3 w-3 text-[#b89047]" />
+              <span>View Sample Evaluation</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleLoadSample}
+              title="Populate raw notes with sample pitch deck text"
+              className="flex items-center justify-center space-x-1 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-mono uppercase tracking-wider text-slate-700 hover:border-slate-900 hover:text-slate-950 transition-all shadow-xs cursor-pointer"
+            >
+              <span>{isSampleLoaded ? "✓ Notes Loaded" : "Load Notes"}</span>
+            </button>
+          </div>
         </div>
 
         {/* Tab Content Area */}
@@ -300,14 +324,33 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
 
           {/* API Error Notification */}
           {errorMessage && (
-            <div className="flex items-center space-x-2.5 rounded-xl border border-rose-200 bg-rose-50 p-3.5 text-xs text-rose-800">
-              <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
-              <div className="flex-1">{errorMessage}</div>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 rounded-xl border border-rose-200 bg-rose-50 p-3.5 text-xs text-rose-800">
+              <div className="flex items-center space-x-2.5">
+                <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
+                <div className="flex-1">{errorMessage}</div>
+              </div>
+              <button
+                type="button"
+                onClick={onViewSampleEvaluation}
+                className="shrink-0 flex items-center space-x-1.5 rounded-lg border border-rose-300 bg-white px-3 py-1.5 text-[11px] font-mono font-bold uppercase tracking-wider text-rose-900 hover:bg-rose-100 transition-all cursor-pointer"
+              >
+                <Sparkles className="h-3 w-3 text-[#b89047]" />
+                <span>View Sample Memo</span>
+              </button>
             </div>
           )}
 
-          {/* Submit Action: Signature Metallic Brass Button */}
-          <div className="pt-2 flex items-center justify-end">
+          {/* Submit Action: Signature Metallic Brass Button & View Sample Button */}
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={onViewSampleEvaluation}
+              className="w-full sm:w-auto flex items-center justify-center space-x-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-xs font-mono font-bold uppercase tracking-wider text-slate-800 hover:border-slate-900 hover:bg-slate-50 transition-all shadow-xs cursor-pointer"
+            >
+              <Sparkles className="h-3.5 w-3.5 text-[#b89047]" />
+              <span>View Sample Evaluation</span>
+            </button>
+
             <button
               type="submit"
               disabled={

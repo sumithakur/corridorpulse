@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Settings, ExternalLink, Check, AlertCircle, Zap, ShieldAlert } from "lucide-react";
+import { X, Settings, ExternalLink, Check, AlertCircle, Zap, ShieldAlert, Sparkles } from "lucide-react";
 
 interface ApiKeyModalProps {
   isOpen: boolean;
@@ -9,6 +9,7 @@ interface ApiKeyModalProps {
   apiKey: string;
   onSaveKey: (key: string) => void;
   rateLimitExceeded?: boolean;
+  onViewSampleEvaluation?: () => void;
 }
 
 export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({
@@ -17,6 +18,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({
   apiKey,
   onSaveKey,
   rateLimitExceeded = false,
+  onViewSampleEvaluation,
 }) => {
   const [prevApiKey, setPrevApiKey] = useState(apiKey);
   const [inputKey, setInputKey] = useState(apiKey);
@@ -70,11 +72,24 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({
         {rateLimitExceeded && (
           <div className="flex items-start space-x-2.5 rounded-xl border border-amber-200 bg-amber-50 p-3.5 text-xs text-amber-900">
             <ShieldAlert className="h-4 w-4 shrink-0 text-amber-700 mt-0.5" />
-            <div className="space-y-1">
+            <div className="space-y-1.5 flex-1">
               <p className="font-bold text-amber-950">Free Trial Limit Reached (5 screens/hr)</p>
               <p className="text-slate-700 leading-relaxed font-editorial italic">
                 Add your own free Gemini API key below to unlock <strong>unlimited screenings</strong> with zero rate limits.
               </p>
+              {onViewSampleEvaluation && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onViewSampleEvaluation();
+                  }}
+                  className="mt-1 inline-flex items-center space-x-1.5 rounded-lg border border-amber-300 bg-white px-3 py-1.5 text-xs font-mono font-bold uppercase tracking-wider text-amber-900 hover:bg-amber-100 transition-all cursor-pointer"
+                >
+                  <Sparkles className="h-3 w-3 text-[#b89047]" />
+                  <span>View Sample Evaluation (No Key Needed)</span>
+                </button>
+              )}
             </div>
           </div>
         )}
