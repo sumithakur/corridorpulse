@@ -1,12 +1,64 @@
 @import "tailwindcss";
 
+:root {
+  --bg-canvas: #f8fafc;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --accent-brass: #b89047;
+  --accent-brass-hover: #a17a2a;
+}
+
+/* Technical dot-grid canvas matching sumitkt.com */
+.bg-dot-grid {
+  background-color: #f8fafc;
+  background-image: radial-gradient(#cbd5e1 1.25px, transparent 1.25px);
+  background-size: 26px 26px;
+  background-attachment: fixed;
+}
+
+/* Soft peripheral vignette */
+.vignette-overlay {
+  position: relative;
+}
+.vignette-overlay::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 65%, rgba(15, 23, 42, 0.04) 100%);
+  z-index: 1;
+}
+
+/* Typographic Legibility & Wrapping */
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+p, li, blockquote {
+  text-wrap: pretty;
+}
+
+/* Custom Editorial Serif & Accent Utilities */
+.font-editorial {
+  font-family: var(--font-newsreader, "Newsreader"), Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+.brass-btn {
+  background-color: var(--accent-brass);
+  color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+.brass-btn:hover {
+  background-color: var(--accent-brass-hover);
+}
+
 @layer utilities {
   /* Print Optimization Styles */
   @media print {
     body {
       background-color: white !important;
       color: black !important;
-      font-size: 11pt !important;
+      font-size: 10.5pt !important;
       margin: 0 !important;
       padding: 0 !important;
     }

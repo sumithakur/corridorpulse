@@ -101,25 +101,26 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
       onEvaluate(rawText, "text", "Founder_Notes.txt", thesisConfig);
     } else if (activeTab === "url") {
       if (!urlInput.trim()) return;
-      // Synthesize URL pitch deck evaluation text context
       const textFromUrl = `URL TO EVALUATE: ${urlInput.trim()}\n\nNote: Please evaluate the company from the URL provided and infer deeptech / operational attributes based on available public venture intelligence data for this domain.`;
       onEvaluate(textFromUrl, "url", urlInput.trim(), thesisConfig);
     }
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
-      {/* Banner Intro */}
-      <div className="text-center space-y-2">
-        <div className="inline-flex items-center space-x-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-mono text-emerald-400">
-          <Sparkles className="h-3.5 w-3.5" />
-          <span>Dynamic Venture Diligence & Thesis Scoring</span>
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+      {/* Hero Section matching sumitkt.com aesthetic */}
+      <div className="text-center space-y-3 pt-2">
+        <div className="inline-flex items-center space-x-2 rounded-full border border-slate-300 bg-white/90 px-3.5 py-1 text-[11px] font-mono uppercase tracking-widest text-slate-700 shadow-xs">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#b89047]" />
+          <span>Operator Diligence Lab • Pre-IC Engine</span>
         </div>
-        <h2 className="text-2xl font-bold tracking-tight text-zinc-100 sm:text-3xl">
-          Screen Deals & Pilot Feasibility Against Your Thesis
-        </h2>
-        <p className="max-w-2xl mx-auto text-xs sm:text-sm text-zinc-400">
-          Configure your investment criteria, then upload startup collateral (PDF deck, notes, or URL) to generate an objective, partner-level IC Scorecard.
+
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-950 uppercase max-w-3xl mx-auto leading-tight font-sans">
+          Institutional Deal Screener & Pre-IC Memo Engine.
+        </h1>
+
+        <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-600 font-editorial italic leading-relaxed">
+          Bridge the gap between raw startup collateral and institutional-grade investment committee memos. Evaluated dynamically against user-defined thesis constraints.
         </p>
       </div>
 
@@ -130,48 +131,48 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
       />
 
       {/* 2. Collateral Ingestion Form Container */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-900/90 shadow-2xl overflow-hidden backdrop-blur-sm">
-        {/* Top Control Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between border-b border-zinc-800 bg-zinc-950/60 px-4 py-3 sm:px-6 gap-3">
+      <div className="rounded-2xl border border-slate-200/90 bg-white/95 shadow-sm overflow-hidden backdrop-blur-md">
+        {/* Top Control Bar with Segmented Pills */}
+        <div className="flex flex-col sm:flex-row items-center justify-between border-b border-slate-200/80 bg-slate-50/70 px-4 py-3 sm:px-6 gap-3">
           {/* Navigation Tabs */}
-          <div className="flex items-center space-x-1 rounded-xl bg-zinc-900 p-1 border border-zinc-800 w-full sm:w-auto">
+          <div className="flex items-center space-x-1 rounded-full bg-slate-200/70 p-1 w-full sm:w-auto">
             <button
               type="button"
               onClick={() => setActiveTab("pdf")}
-              className={`flex-1 sm:flex-initial flex items-center justify-center space-x-2 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center space-x-2 rounded-full px-4 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === "pdf"
-                  ? "bg-zinc-800 text-emerald-400 shadow-sm border border-zinc-700"
-                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50"
+                  ? "bg-slate-950 text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-950"
               }`}
             >
               <Upload className="h-3.5 w-3.5" />
-              <span>Upload PDF Deck</span>
+              <span className="font-mono text-[11px] uppercase tracking-wider">PDF Pitch Deck</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab("text")}
-              className={`flex-1 sm:flex-initial flex items-center justify-center space-x-2 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center space-x-2 rounded-full px-4 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === "text"
-                  ? "bg-zinc-800 text-emerald-400 shadow-sm border border-zinc-700"
-                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50"
+                  ? "bg-slate-950 text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-950"
               }`}
             >
               <FileText className="h-3.5 w-3.5" />
-              <span>Text / Founder Notes</span>
+              <span className="font-mono text-[11px] uppercase tracking-wider">Raw Text / Notes</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab("url")}
-              className={`flex-1 sm:flex-initial flex items-center justify-center space-x-2 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center space-x-2 rounded-full px-4 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === "url"
-                  ? "bg-zinc-800 text-emerald-400 shadow-sm border border-zinc-700"
-                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50"
+                  ? "bg-slate-950 text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-950"
               }`}
             >
               <Globe className="h-3.5 w-3.5" />
-              <span>Website / URL</span>
+              <span className="font-mono text-[11px] uppercase tracking-wider">Website URL</span>
             </button>
           </div>
 
@@ -179,10 +180,10 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
           <button
             type="button"
             onClick={handleLoadSample}
-            className="w-full sm:w-auto flex items-center justify-center space-x-2 rounded-xl border border-teal-500/30 bg-gradient-to-r from-teal-500/10 to-emerald-500/10 px-3.5 py-1.5 text-xs font-semibold text-teal-300 hover:border-teal-400/50 hover:bg-teal-500/20 transition-all shadow-sm"
+            className="w-full sm:w-auto flex items-center justify-center space-x-1.5 rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-xs font-mono uppercase tracking-wider text-slate-700 hover:border-slate-900 hover:text-slate-950 transition-all shadow-xs cursor-pointer"
           >
-            <Sparkles className="h-3.5 w-3.5 text-teal-400" />
-            <span>{isSampleLoaded ? "✓ Sample Deck Loaded!" : "Load Sample Pitch Deck"}</span>
+            <Sparkles className="h-3 w-3 text-[#b89047]" />
+            <span>{isSampleLoaded ? "✓ Sample Loaded" : "Load Sample Notes"}</span>
           </button>
         </div>
 
@@ -195,7 +196,7 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
-                className="group cursor-pointer flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-zinc-700 bg-zinc-950/40 p-8 sm:p-10 text-center hover:border-emerald-500/60 hover:bg-zinc-950/80 transition-all"
+                className="group cursor-pointer flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50/50 p-8 sm:p-10 text-center hover:border-slate-800 hover:bg-slate-50 transition-all"
               >
                 <input
                   ref={fileInputRef}
@@ -207,35 +208,35 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
                 
                 {pdfExtracting ? (
                   <div className="flex flex-col items-center space-y-3">
-                    <Loader2 className="h-10 w-10 animate-spin text-emerald-400" />
-                    <p className="text-sm font-medium text-zinc-300">Parsing PDF Slides & Extracting Text...</p>
-                    <p className="text-xs text-zinc-500">Reading client-side via pdfjs-dist</p>
+                    <Loader2 className="h-8 w-8 animate-spin text-slate-900" />
+                    <p className="text-sm font-semibold text-slate-900">Parsing PDF Slides & Extracting Text...</p>
+                    <p className="text-xs text-slate-500 font-mono">Reading client-side via pdfjs-dist</p>
                   </div>
                 ) : pdfFile && pdfExtractedText ? (
                   <div className="flex flex-col items-center space-y-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200">
                       <FileCheck className="h-6 w-6" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-zinc-100">{pdfFile.name}</p>
-                      <p className="text-xs text-emerald-400 font-mono mt-0.5">
+                      <p className="text-sm font-bold text-slate-950">{pdfFile.name}</p>
+                      <p className="text-xs text-emerald-700 font-mono mt-0.5">
                         ✓ Extracted {pdfExtractedText.length.toLocaleString()} characters
                       </p>
                     </div>
-                    <span className="text-xs text-zinc-500 underline hover:text-zinc-300">
+                    <span className="text-xs text-slate-500 underline hover:text-slate-900 font-mono">
                       Click to replace PDF
                     </span>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center space-y-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-800 text-zinc-400 group-hover:bg-emerald-500/10 group-hover:text-emerald-400 transition-colors">
-                      <Upload className="h-6 w-6" />
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-200/80 text-slate-700 group-hover:bg-slate-950 group-hover:text-white transition-all shadow-xs">
+                      <Upload className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-zinc-200">
-                        Drag & Drop pitch deck PDF here, or <span className="text-emerald-400 font-semibold underline">browse</span>
+                      <p className="text-sm font-bold text-slate-900">
+                        Drag & Drop pitch deck PDF here, or <span className="underline decoration-slate-400 font-bold">browse</span>
                       </p>
-                      <p className="text-xs text-zinc-400 mt-1">
+                      <p className="text-xs text-slate-500 mt-1 font-editorial italic">
                         Supports standard startup presentation slides (PDF format up to 25MB)
                       </p>
                     </div>
@@ -244,8 +245,8 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
               </div>
 
               {pdfError && (
-                <div className="flex items-center space-x-2 rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-xs text-rose-300">
-                  <AlertCircle className="h-4 w-4 shrink-0 text-rose-400" />
+                <div className="flex items-center space-x-2 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-800">
+                  <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
                   <span>{pdfError}</span>
                 </div>
               )}
@@ -256,10 +257,10 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
           {activeTab === "text" && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-mono font-medium text-zinc-300">
+                <label className="text-xs font-mono uppercase tracking-wider font-semibold text-slate-700">
                   Founder Raw Pitch & Operational Notes
                 </label>
-                <span className="text-xs font-mono text-zinc-400">
+                <span className="text-xs font-mono text-slate-500">
                   {rawText.length.toLocaleString()} chars | ~{rawText.split(/\s+/).filter(Boolean).length} words
                 </span>
               </div>
@@ -268,7 +269,7 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
                 onChange={(e) => setRawText(e.target.value)}
                 rows={12}
                 placeholder="Paste startup overview, technical specs, BOM details, traction metrics, or pitch transcript..."
-                className="w-full rounded-2xl border border-zinc-700 bg-zinc-950 p-4 font-mono text-xs text-zinc-100 placeholder-zinc-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50/60 p-4 font-mono text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900 leading-relaxed transition-all"
               />
             </div>
           )}
@@ -276,11 +277,11 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
           {/* URL Tab */}
           {activeTab === "url" && (
             <div className="space-y-3 py-4">
-              <label className="block text-xs font-mono font-medium text-zinc-300">
+              <label className="block text-xs font-mono uppercase tracking-wider font-semibold text-slate-700">
                 Company Website or Virtual Data Room URL
               </label>
               <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-zinc-500">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                   <Globe className="h-4 w-4" />
                 </div>
                 <input
@@ -288,10 +289,10 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
                   value={urlInput}
                   onChange={(e) => setUrlInput(e.target.value)}
                   placeholder="https://aegis-robotics.tech"
-                  className="w-full rounded-xl border border-zinc-700 bg-zinc-950 pl-10 pr-4 py-3 font-mono text-sm text-zinc-100 placeholder-zinc-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                  className="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-3 font-mono text-sm text-slate-900 placeholder-slate-400 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900 shadow-xs"
                 />
               </div>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-slate-500 font-editorial italic">
                 The evaluation engine will synthesize domain intelligence and technical positioning for the specified company.
               </p>
             </div>
@@ -299,13 +300,13 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
 
           {/* API Error Notification */}
           {errorMessage && (
-            <div className="flex items-center space-x-2.5 rounded-xl border border-rose-500/30 bg-rose-500/10 p-3.5 text-xs text-rose-300">
-              <AlertCircle className="h-4 w-4 shrink-0 text-rose-400" />
+            <div className="flex items-center space-x-2.5 rounded-xl border border-rose-200 bg-rose-50 p-3.5 text-xs text-rose-800">
+              <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
               <div className="flex-1">{errorMessage}</div>
             </div>
           )}
 
-          {/* Submit Action */}
+          {/* Submit Action: Signature Metallic Brass Button */}
           <div className="pt-2 flex items-center justify-end">
             <button
               type="submit"
@@ -315,16 +316,16 @@ export const IngestionForm: React.FC<IngestionFormProps> = ({
                 (activeTab === "text" && !rawText.trim()) ||
                 (activeTab === "url" && !urlInput.trim())
               }
-              className="w-full sm:w-auto flex items-center justify-center space-x-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 px-6 py-3 text-sm font-semibold text-zinc-950 shadow-lg shadow-emerald-500/20 hover:from-emerald-400 hover:to-teal-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="w-full sm:w-auto flex items-center justify-center space-x-2.5 rounded-xl brass-btn px-7 py-3 text-xs font-mono font-bold uppercase tracking-widest shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin text-zinc-950" />
+                  <Loader2 className="h-4 w-4 animate-spin text-white" />
                   <span>Evaluating Deal with Gemini...</span>
                 </>
               ) : (
                 <>
-                  <span>Evaluate Deal Readiness</span>
+                  <span>Run Institutional Diligence</span>
                   <ArrowRight className="h-4 w-4" />
                 </>
               )}

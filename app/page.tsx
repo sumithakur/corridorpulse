@@ -112,7 +112,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-emerald-500 selection:text-zinc-950 font-sans antialiased">
+    <div className="min-h-screen bg-dot-grid text-slate-900 selection:bg-[#b89047]/25 selection:text-slate-950 font-sans antialiased">
       {/* Navbar Header */}
       <Header
         hasCustomKey={Boolean(apiKey.trim())}
