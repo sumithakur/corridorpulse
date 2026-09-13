@@ -10,9 +10,9 @@ function buildDynamicSystemPrompt(thesis: ThesisConfig): string {
   const strictnessDescriptions: Record<number, string> = {
     1: "STRICTNESS LEVEL 1 (Lenient / Founder-Friendly): Give the startup the benefit of the doubt on early stage execution gaps. Prioritize upside vision, explore creative commercialization pathways, and offer constructive feedback.",
     2: "STRICTNESS LEVEL 2 (Early Exploration): Balance early-stage upside with basic technical execution and team feasibility risks.",
-    3: "STRICTNESS LEVEL 3 (Institutional VC Partner): Standard tier-1 VC partner rigor. Require clear technical defensibility, sound unit economics, and defensible go-to-market assumptions.",
-    4: "STRICTNESS LEVEL 4 (High-Hurdle Diligence): Demanding institutional hurdle. Aggressively audit technical moats, margin viability against the hurdle, and operational deployment friction.",
-    5: "STRICTNESS LEVEL 5 (Ruthless Institutional IC Audit): ZERO FLUFF TOLERANCE. Heavily penalize any unsubstantiated traction claims, hand-waving technical architectures, low gross margins below hurdle, or any violation of custom directives. Reject generic wrappers or unvalidated claims immediately.",
+    3: "STRICTNESS LEVEL 3 (Institutional VC Partner): Standard tier-1 VC partner rigor. Require clear technical defensibility, sound business model viability, and defensible go-to-market assumptions.",
+    4: "STRICTNESS LEVEL 4 (High-Hurdle Diligence): Demanding institutional hurdle. Aggressively audit technical moats, unit economics viability, and operational deployment friction.",
+    5: "STRICTNESS LEVEL 5 (Ruthless Institutional IC Audit): ZERO FLUFF TOLERANCE. Heavily penalize unsubstantiated traction claims, hand-waving technical architectures, poor unit economics, or any violation of custom directives. Reject generic wrappers immediately.",
   };
 
   const strictnessGuide = strictnessDescriptions[thesis.diligenceStrictness] || strictnessDescriptions[3];
@@ -31,37 +31,61 @@ MANDATORY USER-DEFINED IC DIRECTIVES:
 No custom negative exclusions provided. Evaluate standard sector benchmarks and defensibility criteria.
 `;
 
-  return `
-You are an institutional Venture Capital Partner and Senior Investment Committee Diligence Lead.
+  const isGeneralDiscovery =
+    thesis.presetId === "preset-general" ||
+    (thesis.presetName && thesis.presetName.toLowerCase().includes("general discovery"));
 
-CURRENT INVESTMENT THESIS CONSTRAINTS CONFIGURED FOR THIS EVALUATION:
-- Target Investment Stage: ${thesis.targetStage}
+  const sectorOrFirstPrinciplesGuidance = isGeneralDiscovery
+    ? `
+GENERAL DISCOVERY & FIRST-PRINCIPLES EVALUATION MODE:
+- The user is screening an unknown or sector-agnostic startup.
+- DO NOT force an India-GCC corridor, sovereign AI, or deeptech lens unless the startup's deck explicitly states or targets it.
+- Evaluate the startup objectively on first principles across 4 core dimensions:
+  1) Core Value Proposition & Problem Solved: Is this solving a real, burning, high-value problem with an unmistakable solution?
+  2) Team & Execution Credibility: Does the founding team exhibit domain expertise, technical depth, or unfair distribution advantages?
+  3) Market Opportunity & Sizing: Is the TAM sufficiently large ($1B+) or expanding rapidly?
+  4) Known Risks, Blindspots, or Missing Information: What key data or proof points are missing from the deck?
+`
+    : `
+TARGETED THESIS ALIGNMENT MODE:
+- Active Mandate: ${thesis.presetName}
 - Target Deployment Regions: ${thesis.targetDeploymentRegions.join(", ")}
 - Sourcing / R&D Origin: ${thesis.sourcingRndOrigin}
 - Core Sector Focus: ${thesis.coreSectorFocus.join(", ")}
 - Tech Depth Hurdle: ${thesis.techDepthHurdle}
 - Strategic Mandate: ${thesis.strategicMandate}
-- Minimum Target Gross Margin: ≥${thesis.minTargetGrossMargin}%
-- Diligence Strictness Calibration: ${strictnessGuide}
+`;
 
+  return `
+You are an institutional Venture Capital Partner and Senior Investment Committee Diligence Lead.
+Your evaluation directly powers an executive Pre-IC Deal Memo for the investment committee.
+
+INVESTMENT CONTEXT & CONSTRAINTS:
+- Target Investment Stage: ${thesis.targetStage}
+- Diligence Strictness Calibration: ${strictnessGuide}
+${sectorOrFirstPrinciplesGuidance}
 ${customDirectivesSection}
 
-CRITICAL EVALUATION GUIDELINES:
-1. BAN GENERIC FLUFF. Provide blunt, direct, critical, highly quantitative, and actionable feedback calibrated to the Strictness Level (${thesis.diligenceStrictness}/5).
-2. THESIS FIT AUDIT: Explicitly grade alignment against the configured Target Regions (${thesis.targetDeploymentRegions.join(", ")}), Sector Focus (${thesis.coreSectorFocus.join(", ")}), Stage (${thesis.targetStage}), and Tech Depth Hurdle (${thesis.techDepthHurdle}).
-3. UNIT ECONOMICS & MARGIN BENCHMARK: Test whether the startup's current or projected gross margin meets the target hurdle of ≥${thesis.minTargetGrossMargin}%. Penalize hardware or service drag that erodes margin.
-4. SOVEREIGN & REGULATORY AUDIT: Check compliance with regional data residency (e.g. UAE DESC, Saudi NCA ECC if GCC is selected) or relevant enterprise data privacy standards.
+CRITICAL RULES ON GROSS MARGINS:
+- DO NOT penalize early-stage startups or treat missing unit gross margins as a negative red flag.
+- In early-stage decks (Pre-Seed, Seed, Series A), unit margin figures are rarely stated and are largely theoretical.
+- Focus your commercial review on overall business model, pricing viability, and revenue mechanics rather than penalizing missing margin metrics.
 
-EVALUATION PILLARS (Must total 0-100 overall, each pillar scored 0-25):
-- Mandate & Thesis Alignment (0-25): Direct alignment with configured target regions, stage (${thesis.targetStage}), sector focus, and strategic procurement intent.
-- Technical & IP Defensibility (0-25): Defensibility against the configured Tech Depth Hurdle (${thesis.techDepthHurdle}). Genuine hardware-software integration or proprietary algorithmic moat vs superficial wrapper.
-- Operational & Deployment Viability (0-25): Reliability in harsh physical environments (extreme heat, dust, desert) or enterprise scale-out conditions; maintenance footprint.
-- Unit Economics & BOM Feasibility (0-25): Hardware gross margins, software ARR add-on viability, customer payback timeline, and compliance with the ≥${thesis.minTargetGrossMargin}% gross margin target.
+PRE-IC DEAL MEMO REQUIREMENTS:
+1. \`executiveSummary\`: Write a crisp, 2-3 sentence summary explaining what the startup actually does, their core target customer, and their monetization mechanism. Zero marketing fluff.
+2. \`keyHighlights\`: Provide EXACTLY 3 high-impact bullet points detailing the startup's greatest strengths, competitive moats, or execution traction.
+3. \`keyRisksAndGaps\`: Provide EXACTLY 3 high-impact bullet points detailing the biggest unverified claims, blindspots, or structural risks in the deck.
+4. \`partnerCallQuestions\`: Provide EXACTLY 3 sharp, penetrating diligence questions for the deal team to ask the founders on their first partner intro call.
+5. RECOMMENDATION RULES:
+   - "Proceed to Intro Call": Strong proposition, credible team signals, or unique wedge worth taking an intro call (score typically >= 70).
+   - "Keep on Radar": Promising market or tech, but too early, lacks product traction, unproven validation, or needs key milestones first (score 50-69).
+   - "Pass": Critical red flags, unviable economics/business model, trivial wrapper, or fundamental thesis mismatch (score < 50).
 
-RECOMMENDATION RULES:
-- "Proceed to Diligence": Overall score >= 75 with thesisFit.matchScore >= 70% and no unaddressed catastrophic red flags.
-- "Conditional Pilot Only": Overall score 50-74, or strong tech/regional potential but unproven margins or partial thesis misalignment.
-- "Pass": Overall score < 50, thesis fit < 50%, or severe unaddressed red flags / directive violations.
+EVALUATION PILLARS (Must total 0-100 overall, each scored 0-25):
+- Mandate & Thesis Alignment (0-25): Alignment with investment stage, sector, and strategic intent.
+- Technical & IP Defensibility (0-25): Defensibility against the Tech Depth Hurdle; proprietary software/hardware depth vs easily replicable wrapper.
+- Operational & Deployment Viability (0-25): Execution complexity, customer friction, distribution scaling, and implementation feasibility.
+- Unit Economics & BOM Feasibility (0-25): Business model viability, pricing power, customer payback timeline, and commercial scalability (without penalizing unstated early-stage margin numbers).
 
 OUTPUT REQUIREMENTS:
 You MUST respond with valid JSON ONLY conforming strictly to the requested JSON schema.
@@ -82,13 +106,32 @@ const JSON_SCHEMA = {
       },
       required: ["name", "oneLiner", "hqLocation", "primarySector", "stage"],
     },
+    executiveSummary: {
+      type: Type.STRING,
+      description: "2-3 sentences clearly explaining what the company actually does, who they sell to, and how they make money.",
+    },
+    keyHighlights: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "Exactly 3 concise bullet points detailing the strongest highlights & strengths",
+    },
+    keyRisksAndGaps: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "Exactly 3 concise bullet points detailing critical risks, blindspots, or missing deck data",
+    },
+    partnerCallQuestions: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "Exactly 3 sharp diligence questions for the first partner call",
+    },
     overallAssessment: {
       type: Type.OBJECT,
       properties: {
         score: { type: Type.NUMBER, description: "Overall score from 0 to 100" },
         recommendation: { 
           type: Type.STRING, 
-          enum: ["Proceed to Diligence", "Conditional Pilot Only", "Pass"] 
+          enum: ["Proceed to Intro Call", "Keep on Radar", "Pass"] 
         },
         summaryRationale: { type: Type.STRING },
       },
@@ -163,10 +206,13 @@ const JSON_SCHEMA = {
   },
   required: [
     "companyProfile",
+    "executiveSummary",
+    "keyHighlights",
+    "keyRisksAndGaps",
+    "partnerCallQuestions",
     "overallAssessment",
     "thesisFit",
     "evaluationPillars",
-    "gccPilotFit",
     "redFlags",
     "keyQuestionsForFounder",
   ],
@@ -290,6 +336,15 @@ Perform an institutional partner-level evaluation strictly according to the conf
     // Sanitize and ensure numeric constraints
     if (parsedResult.overallAssessment) {
       parsedResult.overallAssessment.score = Math.min(100, Math.max(0, Math.round(parsedResult.overallAssessment.score || 0)));
+      // Normalize recommendation if model returns an older variant
+      const rec = parsedResult.overallAssessment.recommendation as string;
+      if (rec === "Proceed to Diligence") {
+        parsedResult.overallAssessment.recommendation = "Proceed to Intro Call";
+      } else if (rec === "Conditional Pilot Only") {
+        parsedResult.overallAssessment.recommendation = "Keep on Radar";
+      } else if (rec !== "Proceed to Intro Call" && rec !== "Keep on Radar" && rec !== "Pass") {
+        parsedResult.overallAssessment.recommendation = parsedResult.overallAssessment.score >= 70 ? "Proceed to Intro Call" : parsedResult.overallAssessment.score >= 50 ? "Keep on Radar" : "Pass";
+      }
     }
     if (parsedResult.thesisFit) {
       parsedResult.thesisFit.matchScore = Math.min(100, Math.max(0, Math.round(parsedResult.thesisFit.matchScore || 0)));
@@ -299,6 +354,20 @@ Perform an institutional partner-level evaluation strictly according to the conf
         ...p,
         score: Math.min(25, Math.max(0, Math.round(p.score || 0))),
       }));
+    }
+
+    // Ensure Pre-IC Deal Memo fields are always populated
+    if (!parsedResult.executiveSummary) {
+      parsedResult.executiveSummary = parsedResult.companyProfile?.oneLiner || parsedResult.overallAssessment?.summaryRationale || "";
+    }
+    if (!Array.isArray(parsedResult.keyHighlights) || parsedResult.keyHighlights.length === 0) {
+      parsedResult.keyHighlights = parsedResult.evaluationPillars?.flatMap((p) => p.findings).slice(0, 3) || [];
+    }
+    if (!Array.isArray(parsedResult.keyRisksAndGaps) || parsedResult.keyRisksAndGaps.length === 0) {
+      parsedResult.keyRisksAndGaps = parsedResult.redFlags?.slice(0, 3) || [];
+    }
+    if (!Array.isArray(parsedResult.partnerCallQuestions) || parsedResult.partnerCallQuestions.length === 0) {
+      parsedResult.partnerCallQuestions = parsedResult.keyQuestionsForFounder?.slice(0, 3) || [];
     }
 
     // Attach the thesis configuration evaluated against

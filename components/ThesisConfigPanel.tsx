@@ -9,7 +9,6 @@ import {
   Check, 
   Layers,
   MapPin,
-  Percent,
   Gauge,
   FileCode2,
   Info
@@ -127,6 +126,7 @@ export const ThesisConfigPanel: React.FC<ThesisConfigPanelProps> = ({
               aria-label="Investment Thesis Preset"
               className="rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-1.5 font-mono text-xs text-zinc-200 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer shadow-sm"
             >
+              <option value="preset-general">General Discovery (Unknown / Sector-Agnostic Startup)</option>
               <option value="preset-1">Preset 1: India-GCC DeepTech & Sovereign AI</option>
               <option value="preset-2">Preset 2: Global Enterprise AI & B2B SaaS</option>
               <option value="preset-3">Preset 3: Climate & Industrial Hardware</option>
@@ -162,9 +162,6 @@ export const ThesisConfigPanel: React.FC<ThesisConfigPanelProps> = ({
           </span>
           <span className="rounded-lg border border-zinc-700 bg-zinc-900 px-2.5 py-1 text-zinc-300 font-mono">
             {config.techDepthHurdle}
-          </span>
-          <span className="rounded-lg border border-teal-500/20 bg-teal-500/10 px-2.5 py-1 text-teal-300 font-mono">
-            Margin ≥{config.minTargetGrossMargin}%
           </span>
           <span className="rounded-lg border border-amber-500/20 bg-amber-500/10 px-2.5 py-1 text-amber-300 font-mono">
             Strictness {config.diligenceStrictness}/5 ({strictnessInfo.title})
@@ -336,33 +333,6 @@ export const ThesisConfigPanel: React.FC<ThesisConfigPanelProps> = ({
                 </div>
               </div>
 
-              {/* Minimum Target Gross Margin Slider */}
-              <div className="rounded-xl border border-zinc-800 bg-zinc-950/60 p-4 space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-mono font-medium text-zinc-300 flex items-center space-x-1.5">
-                    <Percent className="h-3.5 w-3.5 text-teal-400" />
-                    <span>Minimum Target Gross Margin</span>
-                  </label>
-                  <span className="rounded-lg border border-teal-500/30 bg-teal-500/10 px-2 py-0.5 font-mono text-xs font-bold text-teal-300">
-                    ≥ {config.minTargetGrossMargin}%
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min={30}
-                  max={90}
-                  step={5}
-                  value={config.minTargetGrossMargin}
-                  onChange={(e) => handleFieldChange("minTargetGrossMargin", Number(e.target.value))}
-                  className="w-full accent-teal-400 cursor-pointer"
-                />
-                <div className="flex justify-between text-[10px] font-mono text-zinc-500">
-                  <span>30% (Heavy Hardware)</span>
-                  <span>65% (Hybrid / DeepTech)</span>
-                  <span>90% (Pure SaaS)</span>
-                </div>
-              </div>
-
               {/* Diligence Strictness Slider */}
               <div className="rounded-xl border border-zinc-800 bg-zinc-950/60 p-4 space-y-2">
                 <div className="flex items-center justify-between">
@@ -394,7 +364,7 @@ export const ThesisConfigPanel: React.FC<ThesisConfigPanelProps> = ({
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-zinc-800 pt-4 text-xs font-mono">
             <button
               type="button"
-              onClick={() => handlePresetSelect(config.presetId === "custom" ? "preset-1" : config.presetId)}
+              onClick={() => handlePresetSelect(config.presetId === "custom" ? "preset-general" : config.presetId)}
               className="flex items-center space-x-1.5 text-zinc-400 hover:text-zinc-200 transition-colors"
             >
               <RotateCcw className="h-3 w-3" />

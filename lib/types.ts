@@ -1,4 +1,4 @@
-export type RecommendationType = "Proceed to Diligence" | "Conditional Pilot Only" | "Pass";
+export type RecommendationType = "Proceed to Intro Call" | "Keep on Radar" | "Pass";
 export type VerdictType = "Strong" | "Moderate" | "Critical Risk";
 export type DataResidencyFriction = "Low" | "Medium" | "High";
 export type ThesisFitVerdict = "High Alignment" | "Moderate Fit" | "Misaligned";
@@ -12,7 +12,6 @@ export interface ThesisConfig {
   coreSectorFocus: string[];
   techDepthHurdle: string;
   strategicMandate: string;
-  minTargetGrossMargin: number;
   diligenceStrictness: number; // 1 (Lenient) to 5 (Ruthless IC)
   customDirectives: string;
 }
@@ -45,13 +44,13 @@ export interface OverallAssessment {
 }
 
 export interface EvaluationPillar {
-  pillarName: "Mandate & Thesis Alignment" | "Technical & IP Defensibility" | "Operational & Deployment Viability" | "Unit Economics & BOM Feasibility";
+  pillarName: string;
   score: number; // 0-25
   verdict: VerdictType;
   findings: string[];
 }
 
-export interface GccPilotFit {
+export interface RegionalPilotFit {
   targetSectors: string[];
   dataResidencyFriction: DataResidencyFriction;
   potentialRegionalPartners: string[];
@@ -60,9 +59,14 @@ export interface GccPilotFit {
 export interface EvaluationResult {
   companyProfile: CompanyProfile;
   overallAssessment: OverallAssessment;
+  // Pre-IC Deal Memo Core Fields
+  executiveSummary: string; // 2-3 sentences on what they actually do
+  keyHighlights: string[]; // 3 bullet points
+  keyRisksAndGaps: string[]; // 3 bullet points
+  partnerCallQuestions: string[]; // 3 questions for the first partner call
   thesisFit: ThesisFit;
   evaluationPillars: EvaluationPillar[];
-  gccPilotFit: GccPilotFit;
+  gccPilotFit?: RegionalPilotFit;
   redFlags: string[];
   keyQuestionsForFounder: string[];
   evaluatedThesis?: ThesisConfig;
