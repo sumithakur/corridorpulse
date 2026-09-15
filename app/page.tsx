@@ -7,9 +7,16 @@ import { IngestionForm } from "@/components/IngestionForm";
 import { ScorecardView } from "@/components/ScorecardView";
 import { ThesisConfigPanel } from "@/components/ThesisConfigPanel";
 import { DealflowQueue } from "@/components/DealflowQueue";
-import { EvaluationResult, ThesisConfig, DealQueueItem } from "@/lib/types";
+import { EvaluationResult, ThesisConfig, SavedDealRecord } from "@/lib/types";
 import { DEFAULT_THESIS_CONFIG } from "@/lib/thesisPresets";
-import { SAMPLE_DEAL_MEMO, SAMPLE_DEAL_QUEUE } from "@/lib/sampleData";
+import { SAMPLE_DEAL_MEMO } from "@/lib/sampleData";
+import { 
+  getSavedDeals, 
+  saveDealToLocalStorage, 
+  deleteSavedDealFromLocalStorage, 
+  clearAllLocalStorage,
+  LOCAL_KEY_STORAGE 
+} from "@/lib/dealStorage";
 import { 
   Sparkles, 
   ArrowRight, 
@@ -17,8 +24,6 @@ import {
   Sliders, 
   ShieldCheck 
 } from "lucide-react";
-
-const LOCAL_KEY_STORAGE = "DEAL_SCREENER_GEMINI_KEY";
 
 export default function Home() {
   const [apiKey, setApiKey] = useState<string>(() => {
@@ -34,9 +39,14 @@ export default function Home() {
   const [evaluationResult, setEvaluationResult] = useState<EvaluationResult | null>(null);
   const [thesisConfig, setThesisConfig] = useState<ThesisConfig>(DEFAULT_THESIS_CONFIG);
   
-  // Navigation: Workspace vs Dealflow Queue (Audit Point 27)
+  // Navigation: Workspace vs Dealflow Queue (Required Item 2)
   const [activeView, setActiveView] = useState<"workspace" | "queue">("workspace");
-  const [dealQueue, setDealQueue] = useState<DealQueueItem[]>(SAMPLE_DEAL_QUEUE);
+  const [savedDeals, setSavedDeals] = useState<SavedDealRecord[]>(() => {
+    if (typeof window !== "undefined") {
+      return getSavedDeals();
+    }
+    return [];
+  });
 
   const ingestSectionRef = useRef<HTMLDivElement>(null);
 
@@ -52,13 +62,46 @@ export default function Home() {
     }
   };
 
-  // Dedicated Sample Evaluation handler: Bypasses API key validation completely
+  // Dedicated Sample Evaluation handler
   const handleViewSampleEvaluation = () => {
     setEvaluationResult(SAMPLE_DEAL_MEMO);
     setActiveView("workspace");
     setErrorMessage(null);
     setIsRateLimited(false);
     setIsModalOpen(false);
+  };
+
+  // Save deal manually or on evaluation finish (Required Item 1)
+  const handleSaveDeal = (dealData: EvaluationResult) => {
+    const savedRecord = saveDealToLocalStorage(dealData);
+    setSavedDeals((prev) => {
+      const remaining = prev.filter(
+        (d) => d.id !== savedRecord.id && d.companyName.toLowerCase() !== savedRecord.companyName.toLowerCase()
+      );
+      return [savedRecord, ...remaining];
+    });
+  };
+
+  const handleDeleteDeal = (id: string) => {
+    const updated = deleteSavedDealFromLocalStorage(id);
+    setSavedDeals(updated);
+  };
+
+  const handleClearAllStorage = () => {
+    clearAllLocalStorage();
+    setApiKey("");
+    setSavedDeals([]);
+    setIsRateLimited(false);
+  };
+
+  const handleLoadSampleDeal = () => {
+    const record = saveDealToLocalStorage(SAMPLE_DEAL_MEMO);
+    setSavedDeals((prev) => {
+      const remaining = prev.filter(
+        (d) => d.companyName.toLowerCase() !== record.companyName.toLowerCase()
+      );
+      return [record, ...remaining];
+    });
   };
 
   const handleEvaluate = async (
@@ -113,24 +156,8 @@ export default function Home() {
         };
         setEvaluationResult(fullResult);
 
-        // Prepend to deal queue (Audit Point 27)
-        const newQueueItem: DealQueueItem = {
-          id: `deal-${Date.now()}`,
-          companyName: fullResult.companyProfile?.name || "Startup Deal",
-          oneLiner: fullResult.companyProfile?.oneLiner || "Screened deal candidate",
-          stage: fullResult.companyProfile?.stage || "Seed",
-          sector: fullResult.companyProfile?.primarySector || "DeepTech",
-          region: currentThesis.targetDeploymentRegions[0] || "Global",
-          score: fullResult.overallAssessment.score,
-          thesisFitScore: fullResult.thesisFit?.matchScore || 80,
-          riskLevel: fullResult.overallAssessment.score >= 75 ? "Low" : fullResult.overallAssessment.score >= 55 ? "Medium" : "High",
-          mandateName: currentThesis.presetName,
-          systemRecommendation: fullResult.overallAssessment.recommendation,
-          investorDecision: "Pending",
-          screenedDate: "Just now",
-          memoData: fullResult,
-        };
-        setDealQueue((prev) => [newQueueItem, ...prev]);
+        // Auto-save evaluated deal to browser's localStorage (Required Item 1)
+        handleSaveDeal(fullResult);
       } else {
         throw new Error("No evaluation result returned from API.");
       }
@@ -168,39 +195,45 @@ export default function Home() {
         activeView={activeView}
         onSelectView={(v) => {
           setActiveView(v);
-          if (v === "workspace" && evaluationResult) {
-            // Keep evaluation result if viewing workspace
-          }
         }}
-        queueCount={dealQueue.length}
+        queueCount={savedDeals.length}
       />
 
       {/* Main View Router */}
       <main className="flex-1 pb-16">
         
-        {/* VIEW 1: DEALFLOW QUEUE TAB (Audit Point 27) */}
+        {/* VIEW 1: DEALFLOW QUEUE TAB (Required Item 2) */}
         {activeView === "queue" ? (
           <DealflowQueue
-            deals={dealQueue}
+            deals={savedDeals}
             onSelectDeal={(memo) => {
               setEvaluationResult(memo);
               setActiveView("workspace");
             }}
+            onDeleteDeal={handleDeleteDeal}
             onNewScreen={() => {
               setEvaluationResult(null);
               setActiveView("workspace");
             }}
+            onLoadSampleDeal={handleLoadSampleDeal}
           />
         ) : evaluationResult ? (
           /* VIEW 2: IC DECISION WORKSPACE (Audit Point 14) */
           <div className="py-6">
-            <ScorecardView data={evaluationResult} onReset={handleReset} />
+            <ScorecardView 
+              data={evaluationResult} 
+              onReset={handleReset} 
+              onSaveDeal={handleSaveDeal}
+              isDealSaved={savedDeals.some(
+                (d) => d.companyName.toLowerCase() === evaluationResult.companyProfile?.name?.toLowerCase()
+              )}
+            />
           </div>
         ) : (
           /* VIEW 3: THREE-STAGE WORKSPACE & HERO (Audit Points 1, 2, 31, 34) */
           <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 space-y-9">
             
-            {/* HERO SECTION MATCHING SCREENSHOT REFERENCE (Audit Point 34) */}
+            {/* HERO SECTION MATCHING SCREENSHOT REFERENCE */}
             <section className="text-center space-y-4 pt-2">
               <div className="inline-flex items-center space-x-2 rounded-full border border-emerald-300 bg-white/90 px-3.5 py-1 text-[11px] font-mono uppercase tracking-widest text-emerald-800 shadow-2xs">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -216,7 +249,7 @@ export default function Home() {
                 An AI-powered screening tool for venture capital funds that brings structure, objectivity, and negative diligence to the first mile of dealflow.
               </p>
 
-              {/* Callout & Dual Dominant CTAs (Audit Points 11, 12, 34) */}
+              {/* Callout & Dual Dominant CTAs */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <button
                   type="button"
@@ -237,16 +270,15 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* Subtitle Highlight matching image */}
+              {/* Subtitle Highlight */}
               <div className="pt-1">
                 <span className="font-mono text-xs text-slate-500 font-medium">
                   Turn unstructured pitch decks into <strong className="text-emerald-700 font-bold">structured insights.</strong>
                 </span>
               </div>
 
-              {/* 3 VALUE PROP PILLARS FROM REFERENCE MOCKUP */}
+              {/* 3 VALUE PROP PILLARS */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 text-left">
-                {/* Pillar 1 */}
                 <div className="rounded-2xl border border-slate-200/90 bg-white p-5 space-y-2 shadow-2xs">
                   <div className="flex items-center space-x-2.5 text-slate-950">
                     <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-800 border border-slate-200">
@@ -259,7 +291,6 @@ export default function Home() {
                   </p>
                 </div>
 
-                {/* Pillar 2 */}
                 <div className="rounded-2xl border border-slate-200/90 bg-white p-5 space-y-2 shadow-2xs">
                   <div className="flex items-center space-x-2.5 text-slate-950">
                     <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-800 border border-slate-200">
@@ -272,7 +303,6 @@ export default function Home() {
                   </p>
                 </div>
 
-                {/* Pillar 3 */}
                 <div className="rounded-2xl border border-slate-200/90 bg-white p-5 space-y-2 shadow-2xs">
                   <div className="flex items-center space-x-2.5 text-slate-950">
                     <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-800 border border-slate-200">
@@ -287,7 +317,7 @@ export default function Home() {
               </div>
             </section>
 
-            {/* THREE-STAGE WORKSPACE PROGRESS TRACKER (Audit Point 1 & 2) */}
+            {/* THREE-STAGE WORKSPACE PROGRESS TRACKER */}
             <div className="flex items-center justify-between border-y border-slate-200 py-3 text-xs font-mono">
               <div className="flex items-center space-x-2 text-slate-950 font-bold">
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-white text-[10px]">
@@ -329,7 +359,7 @@ export default function Home() {
               />
             </div>
 
-            {/* FOOTER CALLOUT MATCHING SCREENSHOT */}
+            {/* FOOTER CALLOUT */}
             <div className="border-t border-slate-200 pt-6 text-center space-y-2">
               <div className="inline-flex items-center space-x-2 text-[11px] font-mono uppercase tracking-widest text-slate-500 font-semibold">
                 <span className="h-1 w-6 bg-emerald-500 rounded-full" />
@@ -345,7 +375,7 @@ export default function Home() {
 
       </main>
 
-      {/* Settings / API Key Modal */}
+      {/* Settings / API Key Modal with Privacy Disclosure & Clear Local Storage */}
       <ApiKeyModal
         isOpen={isModalOpen}
         onClose={() => {
@@ -356,6 +386,7 @@ export default function Home() {
         onSaveKey={handleSaveApiKey}
         rateLimitExceeded={isRateLimited}
         onViewSampleEvaluation={handleViewSampleEvaluation}
+        onClearAllLocalStorage={handleClearAllStorage}
       />
     </div>
   );

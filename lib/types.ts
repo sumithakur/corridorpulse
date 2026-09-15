@@ -86,6 +86,17 @@ export interface InvestorDecision {
   notes?: string;
 }
 
+export interface SavedDealRecord {
+  id: string;
+  createdAt: string;
+  companyName: string;
+  score: number;
+  thesisMatchPercent: number;
+  verdict: string;
+  sector: string;
+  memoData: EvaluationResult;
+}
+
 export interface DealQueueItem {
   id: string;
   companyName: string;

@@ -17,18 +17,30 @@ import {
   FileText,
   HelpCircle,
   UserCheck,
-  Clock
+  Clock,
+  Bookmark,
+  BookmarkCheck
 } from "lucide-react";
 import { EvaluationResult, InvestorDecisionType } from "@/lib/types";
+import { saveDealToLocalStorage } from "@/lib/dealStorage";
 
 interface ScorecardViewProps {
   data: EvaluationResult;
   onReset: () => void;
+  onSaveDeal?: (data: EvaluationResult) => void;
+  isDealSaved?: boolean;
 }
 
-export const ScorecardView: React.FC<ScorecardViewProps> = ({ data, onReset }) => {
+export const ScorecardView: React.FC<ScorecardViewProps> = ({ 
+  data, 
+  onReset,
+  onSaveDeal,
+  isDealSaved = false 
+}) => {
   const [copied, setCopied] = useState(false);
   const [showEvidenceDrawer, setShowEvidenceDrawer] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
+  const isSaved = isDealSaved || justSaved;
 
   // Investor Decision State (Audit Point 30)
   const [investorDecision, setInvestorDecision] = useState<InvestorDecisionType>(
@@ -264,6 +276,32 @@ ${p.findings.map((f) => `- ${f}`).join("\n")}
         </div>
 
         <div className="flex items-center space-x-2 sm:space-x-3">
+          <button
+            type="button"
+            onClick={() => {
+              if (onSaveDeal) {
+                onSaveDeal(data);
+              } else {
+                saveDealToLocalStorage(data);
+              }
+              setJustSaved(true);
+              setTimeout(() => setJustSaved(false), 2500);
+            }}
+            className="flex items-center space-x-1.5 rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-xs font-mono uppercase tracking-wider text-slate-700 hover:border-emerald-600 hover:text-emerald-950 transition-all cursor-pointer shadow-xs"
+          >
+            {isSaved ? (
+              <>
+                <BookmarkCheck className="h-3.5 w-3.5 text-emerald-600" />
+                <span className="text-emerald-700 font-bold">✓ Saved</span>
+              </>
+            ) : (
+              <>
+                <Bookmark className="h-3.5 w-3.5 text-slate-500" />
+                <span>Save Deal</span>
+              </>
+            )}
+          </button>
+
           <button
             onClick={handleCopyMarkdown}
             className="flex items-center space-x-1.5 rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-xs font-mono uppercase tracking-wider text-slate-700 hover:border-slate-900 hover:text-slate-950 transition-all cursor-pointer shadow-xs"
