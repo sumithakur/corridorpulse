@@ -19,8 +19,8 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: "Deal Screener | Institutional VC & Pilot Readiness Scorecard",
-  description: "Evaluate startup pitch decks (PDF), raw notes, or URLs for institutional investment and sovereign GCC pilot deployment readiness using Google Gemini.",
+  title: "Deal Screener | From Dealflow to Decisions",
+  description: "An AI-powered screening tool for venture capital funds that brings structure, objectivity, and negative diligence to the first mile of dealflow.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-dot-grid text-slate-900 vignette-overlay selection:bg-[#b89047]/25 selection:text-slate-950">
+      <body className="min-h-full flex flex-col bg-dot-grid text-slate-900 vignette-overlay selection:bg-emerald-500/20 selection:text-slate-950">
         {children}
       </body>
     </html>

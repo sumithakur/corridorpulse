@@ -56,6 +56,53 @@ export interface RegionalPilotFit {
   potentialRegionalPartners: string[];
 }
 
+export type InvestorDecisionType = "Pending" | "Advance to Partner" | "Request More Info" | "Hold / Watch" | "Pass";
+
+export interface ScoreDriver {
+  label: string;
+  points: number; // e.g. +22, -8
+  category: "positive" | "negative";
+}
+
+export interface EvidenceItem {
+  id: string;
+  claim: string;
+  source: string;
+  status: "Verified in Deck" | "Unverified Claim" | "Founder Note" | "External Signal";
+  context?: string;
+}
+
+export interface NegativeDiligenceCategorized {
+  conflicts: Array<{ title: string; detail: string; source?: string }>;
+  concerns: Array<{ title: string; detail: string; source?: string }>;
+  unknowns: Array<{ title: string; detail: string; source?: string }>;
+  questions: Array<{ title: string; detail: string }>;
+}
+
+export interface InvestorDecision {
+  status: InvestorDecisionType;
+  decidedBy?: string;
+  timestamp?: string;
+  notes?: string;
+}
+
+export interface DealQueueItem {
+  id: string;
+  companyName: string;
+  oneLiner: string;
+  stage: string;
+  sector: string;
+  region: string;
+  score: number;
+  thesisFitScore: number;
+  riskLevel: "Low" | "Medium" | "High";
+  mandateName: string;
+  systemRecommendation: RecommendationType;
+  investorDecision: InvestorDecisionType;
+  screenedDate: string;
+  memoData: EvaluationResult;
+}
+
 export interface EvaluationResult {
   companyProfile: CompanyProfile;
   overallAssessment: OverallAssessment;
@@ -70,6 +117,11 @@ export interface EvaluationResult {
   redFlags: string[];
   keyQuestionsForFounder: string[];
   evaluatedThesis?: ThesisConfig;
+  // Enhanced Institutional Fields (Audit Points 14, 15, 17, 26, 29, 30)
+  scoreDecomposition?: ScoreDriver[];
+  negativeDiligenceCategorized?: NegativeDiligenceCategorized;
+  evidenceList?: EvidenceItem[];
+  investorDecision?: InvestorDecision;
 }
 
 export interface EvaluateRequestPayload {

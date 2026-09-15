@@ -4,8 +4,17 @@
   --bg-canvas: #f8fafc;
   --text-main: #0f172a;
   --text-muted: #64748b;
-  --accent-brass: #b89047;
-  --accent-brass-hover: #a17a2a;
+  --accent-mint: #10b981;
+  --accent-mint-hover: #059669;
+  --accent-mint-subtle: #ecfdf5;
+  --accent-mint-border: #a7f3d0;
+  /* Legacy alias mapped to mint */
+  --accent-brass: #10b981;
+  --accent-brass-hover: #059669;
+  --color-positive: #10b981;
+  --color-warning: #f59e0b;
+  --color-conflict: #ef4444;
+  --color-unknown: #64748b;
 }
 
 /* Technical dot-grid canvas matching sumitkt.com */
@@ -43,13 +52,35 @@ p, li, blockquote {
   font-family: var(--font-newsreader, "Newsreader"), Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
-.brass-btn {
-  background-color: var(--accent-brass);
+.mint-btn, .brass-btn {
+  background-color: var(--accent-mint);
   color: #ffffff;
   transition: all 0.2s ease-in-out;
 }
-.brass-btn:hover {
-  background-color: var(--accent-brass-hover);
+.mint-btn:hover, .brass-btn:hover {
+  background-color: var(--accent-mint-hover);
+}
+
+/* Institutional Semantic Badges (Audit Point 15, 16, 26, 32) */
+.badge-positive {
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+.badge-warning, .badge-concern {
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+.badge-conflict {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+.badge-unknown {
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #475569;
 }
 
 @layer utilities {

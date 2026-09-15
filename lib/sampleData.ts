@@ -41,58 +41,68 @@ ASK & GOAL FOR GCC PILOT:
 - Raising $8M Series A to build an Abu Dhabi assembly & R&D facility, obtain GCC sovereign data security clearances, and deploy 30 autonomous inspection crawlers across ADNOC & Aramco pilot zones.
 `.trim();
 
-import { EvaluationResult } from "./types";
+import { EvaluationResult, DealQueueItem } from "./types";
 import { THESIS_PRESETS } from "./thesisPresets";
 
 export const SAMPLE_DEAL_MEMO: EvaluationResult = {
   companyProfile: {
     name: "AeroEdge Dynamics",
     oneLiner: "Autonomous edge-AI robotics for harsh industrial pipeline inspection.",
-    hqLocation: "Bengaluru, India / Doha, Qatar",
+    hqLocation: "Bengaluru, India / Abu Dhabi, UAE",
     primarySector: "Edge AI & Robotics",
     stage: "Seed",
   },
   overallAssessment: {
     score: 84,
     recommendation: "Proceed to Intro Call",
-    summaryRationale: "Proprietary on-device computer vision inspection robot with demonstrated IP defensibility. Direct alignment with GCC energy corridor mandates, though customer concentration in pilot stage remains a key diligence item.",
+    summaryRationale: "Proprietary on-device SLAM inspection crawler with demonstrated thermal resilience. Direct fit for GCC energy corridor mandates, though 70% customer concentration in initial pilot warrants immediate partner verification.",
   },
-  executiveSummary: "AeroEdge Dynamics builds autonomous, thermal-resistant edge-AI robotics designed for harsh pipeline and industrial energy infrastructure inspection. Operating without GPS or cloud dependency, their proprietary inspection crawler delivers high-frequency non-destructive testing in extreme thermal environments.",
+  executiveSummary: "AeroEdge Dynamics develops thermal-resistant, autonomous edge-AI crawlers and swarm robotics engineered for oil refineries, subsea pipelines, and harsh desert solar arrays across the GCC. Operating with zero GPS or foreign cloud dependency, their proprietary IP68 crawler eliminates downtime and human heat stress hazards.",
   keyHighlights: [
-    "Proprietary SLAM and edge-inference firmware operating without cloud connectivity or GPS.",
-    "Fast payback period with hardware CapEx fully recovered within 4 months of enterprise leasing.",
-    "Two provisional patents filed protecting heat-resistant sensor payload chassis up to 60°C.",
+    "Proprietary edge-native SLAM inference running air-gapped on NVIDIA Jetson Orin Industrial without GPS.",
+    "Hardware CapEx recovered within 4.2 months with 68% hardware gross margins and $24K/yr software recurring revenue.",
+    "Two provisional patents filed protecting active phase-change cooling payload up to 65°C ambient desert heat.",
   ],
   keyRisksAndGaps: [
-    "Pilot concentration: 70% of current revenue pipeline tied to single NOC trial.",
-    "Hardware supply chain dependencies on single-source specialized optics with long lead times.",
-    "Requires local field maintenance teams and support infrastructure across GCC desert deployments.",
+    "Customer Concentration: 70% of current revenue pipeline tied to a single national oil company pilot.",
+    "Single-Source Hardware: Thermal optical sensors sourced exclusively from one European vendor (16-week lead time).",
+    "Missing Support SLA: Deck lacks clarity on whether desert field maintenance requires dedicated dispatch teams or local partner training.",
   ],
   partnerCallQuestions: [
-    "What is your hardware unit cost (BOM) at 50 units vs. 500 units?",
-    "How do thermal limits perform during continuous operation at 50°C+ ambient temperatures?",
+    "What is your hardware BOM cost progression from 50 units ($18,500) to 500 units at scale?",
+    "How does continuous 8-hour operation perform under 60°C ambient temperatures without sensor drift?",
     "What is the deployment timeline from arrival on-site to fully autonomous data collection?",
   ],
   thesisFit: {
     matchScore: 88,
     verdict: "High Alignment",
-    alignmentSummary: "Strong alignment with sovereign infrastructure protection and edge-AI autonomy mandates across the GCC and India.",
+    alignmentSummary: "Strong alignment with sovereign infrastructure protection, harsh environment operations, and edge-AI autonomy mandates across the UAE and Saudi Arabia.",
     directivesCompliance: [
       {
-        directive: "Edge AI & Sovereign Industrial Infrastructure",
+        directive: "Must support GCC deployment/residency (UAE/Saudi)",
         compliant: true,
-        analysis: "Air-gapped operation and on-device compute eliminate data residency barriers and support critical infrastructure inspection.",
+        analysis: "Air-gapped on-premise data architecture complies with UAE DESC and Saudi NCA ECC sovereign data standards.",
+      },
+      {
+        directive: "Reject generic LLM / API wrappers",
+        compliant: true,
+        analysis: "Custom hardware-software coupling with edge-trained computer vision; zero generic API wrapper dependency.",
+      },
+      {
+        directive: "High technical moat in engineering or hardware",
+        compliant: true,
+        analysis: "Active phase-change cooling system + proprietary ultrasonic thickness array provide defensible physical IP.",
       },
     ],
   },
   evaluationPillars: [
     {
-      pillarName: "Strategic & Market Alignment",
+      pillarName: "Mandate & Thesis Alignment",
       score: 22,
       verdict: "Strong",
       findings: [
-        "Strong fit for sovereign infrastructure mandates and harsh environmental inspection.",
-        "Targeting a multi-billion dollar brownfield energy asset inspection market.",
+        "Direct alignment with sovereign energy corridor inspection and GCC Net Zero 2050 modernization mandates.",
+        "Targeting a multi-billion dollar brownfield energy asset inspection market with high willingness to pay.",
       ],
     },
     {
@@ -100,42 +110,265 @@ export const SAMPLE_DEAL_MEMO: EvaluationResult = {
       score: 23,
       verdict: "Strong",
       findings: [
-        "Proprietary SLAM and edge-inference firmware operating without cloud connectivity.",
-        "2 provisional patents filed on heat-resistant sensor payload chassis.",
+        "Proprietary SLAM and edge-inference firmware operating without cloud connectivity or satellite GPS.",
+        "2 provisional patents filed on thermal-isolated payload chassis and acoustic anomaly detection.",
       ],
     },
     {
-      pillarName: "Operational Viability",
+      pillarName: "Operational & Deployment Viability",
       score: 19,
       verdict: "Moderate",
       findings: [
-        "Requires local field maintenance teams across GCC desert deployments.",
-        "Zero data residency friction due to 100% on-prem / air-gapped data logging.",
+        "Requires local field maintenance teams and calibration benches across GCC desert deployments.",
+        "Zero data residency friction due to 100% on-prem / air-gapped local batch synchronization.",
       ],
     },
     {
-      pillarName: "Unit Economics & Commercial Traction",
+      pillarName: "Unit Economics & BOM Feasibility",
       score: 20,
       verdict: "Moderate",
       findings: [
-        "Hardware CapEx recovered within 4 months of enterprise leasing.",
-        "High reliance on initial 2 pilot partners; expansion pipeline needs verification.",
+        "Hardware CapEx ($18.5K BOM) recovered in 4.2 months based on $75K sale + $24K/yr maintenance lease.",
+        "Single-source European optical supplier presents component lead time vulnerability at volume.",
       ],
     },
   ],
+  // Audit Point 29: Mandate Score Decomposition
+  scoreDecomposition: [
+    { label: "Technical & IP Moat", points: 23, category: "positive" },
+    { label: "Mandate Alignment (GCC Sovereign)", points: 22, category: "positive" },
+    { label: "Unit Economics & Payback", points: 20, category: "positive" },
+    { label: "Operational Viability", points: 19, category: "positive" },
+    { label: "Customer Concentration Risk", points: -6, category: "negative" },
+    { label: "Single-Source Optical Dependency", points: -4, category: "negative" },
+  ],
+  // Audit Points 15, 16, 26: Distinct Negative Diligence Categorization
+  negativeDiligenceCategorized: {
+    conflicts: [],
+    concerns: [
+      {
+        title: "High Revenue Pipeline Concentration",
+        detail: "70% of current commercial pipeline is dependent on a single national oil company pilot contract.",
+        source: "Pitch Deck, Slide 14",
+      },
+      {
+        title: "Single-Source Component Lead Times",
+        detail: "Critical heat-resistant optics depend on one German specialty fabricator with 16-week lead times.",
+        source: "Pitch Deck, Slide 11",
+      },
+    ],
+    unknowns: [
+      {
+        title: "Field Support Infrastructure in GCC",
+        detail: "Deck does not clarify whether on-site technician dispatch will be handled in-house or via distributor SLA.",
+        source: "Missing in collateral",
+      },
+      {
+        title: "Cohort Conversion from Pilot to Production",
+        detail: "Historical expansion velocity from free/discounted trials into multi-unit enterprise contracts is unstated.",
+        source: "Data room requested",
+      },
+    ],
+    questions: [
+      {
+        title: "BOM Cost Curve at Scale",
+        detail: "What is your projected Bill of Materials cost at 50 units vs 500 units?",
+      },
+      {
+        title: "Continuous Thermal Limits",
+        detail: "How do internal sensor calibrations hold up during continuous 8-hour shifts at 60°C ambient heat?",
+      },
+      {
+        title: "On-site Commissioning Timeline",
+        detail: "What is the exact time required between crawler arrival and autonomous pipeline inspection?",
+      },
+    ],
+  },
+  // Audit Point 17: Evidence Provenance
+  evidenceList: [
+    {
+      id: "ev-1",
+      claim: "BOM cost $18,500 per unit; selling price $75,000 + $24,000/yr software license.",
+      source: "Pitch Deck, Slide 12",
+      status: "Verified in Deck",
+      context: "Gross margin reported at 68% hardware, 89% software.",
+    },
+    {
+      id: "ev-2",
+      claim: "Zero cloud dependence during field operation; 100% on-premise local server batch sync.",
+      source: "Pitch Deck, Slide 8",
+      status: "Verified in Deck",
+      context: "Complies with UAE DESC and Saudi NCA ECC regulations.",
+    },
+    {
+      id: "ev-3",
+      claim: "Two provisional patents filed on heat-resistant sensor payload chassis up to 65°C.",
+      source: "Pitch Deck, Slide 9",
+      status: "Unverified Claim",
+      context: "Requires IP patent attorney search confirmation during confirmatory diligence.",
+    },
+    {
+      id: "ev-4",
+      claim: "Signed Memorandum of Understanding with UAE maintenance distributor for $1.2M deployment.",
+      source: "Pitch Deck, Slide 14",
+      status: "Verified in Deck",
+      context: "LOI is non-binding pending final safety certification in Q3.",
+    },
+  ],
+  // Audit Point 30: Separate Investor Decision from AI Assessment
+  investorDecision: {
+    status: "Advance to Partner",
+    decidedBy: "Diligence Lead",
+    timestamp: "2026-09-15",
+    notes: "Compelling sovereign energy angle with defensible physical moats. Schedule technical intro call with Dr. Rao and review thermal drift bench tests before IC meeting.",
+  },
   gccPilotFit: {
     targetSectors: ["Oil & Gas Infrastructure", "Desalination & Utilities", "Maritime Logistics"],
     dataResidencyFriction: "Low",
-    potentialRegionalPartners: ["QatarEnergy", "Milaha", "Aramco", "ADNOC"],
+    potentialRegionalPartners: ["ADNOC Technical Services", "Aramco Digital / Wa'ed", "Hub71 Abu Dhabi", "DP World"],
   },
   redFlags: [
-    "Pilot concentration: 70% of current revenue pipeline tied to single NOC trial.",
-    "Hardware supply chain dependencies on single-source specialized optics.",
+    "Customer Concentration: 70% of current revenue pipeline tied to single NOC trial.",
+    "Hardware supply chain dependencies on single-source specialized optics with long lead times.",
   ],
   keyQuestionsForFounder: [
     "What is your hardware unit cost (BOM) at 50 units vs. 500 units?",
     "How do thermal limits perform during continuous operation at 50°C+ ambient temperatures?",
     "What is the deployment timeline from arrival on-site to fully autonomous data collection?",
   ],
-  evaluatedThesis: THESIS_PRESETS["preset-india-gcc"] || THESIS_PRESETS["preset-general"],
+  evaluatedThesis: THESIS_PRESETS["preset-risin-core"],
 };
+
+// Audit Point 27: Dealflow Queue Sample Data for Fund Pipeline Operating Layer
+export const SAMPLE_DEAL_QUEUE: DealQueueItem[] = [
+  {
+    id: "deal-1",
+    companyName: "AeroEdge Dynamics",
+    oneLiner: "Autonomous edge-AI robotics for harsh industrial pipeline inspection.",
+    stage: "Seed",
+    sector: "Edge AI & Robotics",
+    region: "GCC / India",
+    score: 84,
+    thesisFitScore: 88,
+    riskLevel: "Medium",
+    mandateName: "Risin Core VC",
+    systemRecommendation: "Proceed to Intro Call",
+    investorDecision: "Advance to Partner",
+    screenedDate: "Today",
+    memoData: SAMPLE_DEAL_MEMO,
+  },
+  {
+    id: "deal-2",
+    companyName: "CyberFort Sovereign",
+    oneLiner: "Air-gapped sovereign encryption for critical national infrastructure.",
+    stage: "Series A",
+    sector: "Sovereign AI",
+    region: "GCC",
+    score: 91,
+    thesisFitScore: 95,
+    riskLevel: "Low",
+    mandateName: "Sovereign AI GCC",
+    systemRecommendation: "Proceed to Intro Call",
+    investorDecision: "Advance to Partner",
+    screenedDate: "Yesterday",
+    memoData: {
+      ...SAMPLE_DEAL_MEMO,
+      companyProfile: {
+        name: "CyberFort Sovereign",
+        oneLiner: "Air-gapped sovereign encryption for critical national infrastructure.",
+        hqLocation: "Riyadh, Saudi Arabia / Abu Dhabi, UAE",
+        primarySector: "Sovereign AI",
+        stage: "Series A",
+      },
+      overallAssessment: {
+        score: 91,
+        recommendation: "Proceed to Intro Call",
+        summaryRationale: "Exceptional alignment with sovereign data residency mandates. Strong government pipeline with low customer churn and proven zero-trust cryptography.",
+      },
+      thesisFit: {
+        matchScore: 95,
+        verdict: "High Alignment",
+        alignmentSummary: "Perfect fit for on-premise sovereign computing guidelines with institutional defense backing.",
+        directivesCompliance: [
+          {
+            directive: "Must support on-prem sovereign data residency",
+            compliant: true,
+            analysis: "100% on-premise hardware appliances certified by Saudi NCA.",
+          },
+        ],
+      },
+    },
+  },
+  {
+    id: "deal-3",
+    companyName: "Q-Flux Energy Systems",
+    oneLiner: "Thermal energy storage batteries for grid-scale industrial solar parks.",
+    stage: "Seed",
+    sector: "ClimateTech",
+    region: "Global",
+    score: 72,
+    thesisFitScore: 78,
+    riskLevel: "Medium",
+    mandateName: "Climate & Industrial Hardware",
+    systemRecommendation: "Keep on Radar",
+    investorDecision: "Request More Info",
+    screenedDate: "3 days ago",
+    memoData: {
+      ...SAMPLE_DEAL_MEMO,
+      companyProfile: {
+        name: "Q-Flux Energy Systems",
+        oneLiner: "Thermal energy storage batteries for grid-scale industrial solar parks.",
+        hqLocation: "London, UK / Dubai, UAE",
+        primarySector: "ClimateTech",
+        stage: "Seed",
+      },
+      overallAssessment: {
+        score: 72,
+        recommendation: "Keep on Radar",
+        summaryRationale: "High potential storage chemistry, but high CapEx hurdles and long utility sales cycles require verification of 12-month commercial pilot data.",
+      },
+    },
+  },
+  {
+    id: "deal-4",
+    companyName: "PromptFlow AI Studio",
+    oneLiner: "Drag-and-drop conversational agent builder for consumer ecommerce.",
+    stage: "Pre-Seed",
+    sector: "B2B SaaS",
+    region: "North America",
+    score: 41,
+    thesisFitScore: 35,
+    riskLevel: "High",
+    mandateName: "Risin Core VC",
+    systemRecommendation: "Pass",
+    investorDecision: "Pass",
+    screenedDate: "5 days ago",
+    memoData: {
+      ...SAMPLE_DEAL_MEMO,
+      companyProfile: {
+        name: "PromptFlow AI Studio",
+        oneLiner: "Drag-and-drop conversational agent builder for consumer ecommerce.",
+        hqLocation: "San Francisco, CA",
+        primarySector: "B2B SaaS",
+        stage: "Pre-Seed",
+      },
+      overallAssessment: {
+        score: 41,
+        recommendation: "Pass",
+        summaryRationale: "Generic LLM wrapper with zero proprietary IP moat. Extreme churn vulnerability to OpenAI / Anthropic platform releases and misaligned with deeptech mandate.",
+      },
+      thesisFit: {
+        matchScore: 35,
+        verdict: "Misaligned",
+        alignmentSummary: "Violates fund exclusion directive against generic LLM wrappers and lacks regional relevance.",
+        directivesCompliance: [
+          {
+            directive: "Reject generic LLM / API wrappers",
+            compliant: false,
+            analysis: "Direct violation: Application is built as an orchestration layer on top of OpenAI APIs without proprietary models.",
+          },
+        ],
+      },
+    },
+  },
+];

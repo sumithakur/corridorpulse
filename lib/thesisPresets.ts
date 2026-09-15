@@ -43,18 +43,96 @@ export const STRATEGIC_MANDATE_OPTIONS = [
   "Venture Studio Co-Build",
 ] as const;
 
-export const STRICTNESS_LABELS: Record<number, { title: string; desc: string }> = {
-  1: { title: "Lenient / Founder-Friendly", desc: "Constructive feedback, focuses on upside potential and creative vision" },
-  2: { title: "Early Exploration", desc: "Balanced upside potential vs early technical execution risks" },
-  3: { title: "Balanced Institutional VC", desc: "Standard partner-level first-principles audit across problem, team, market & blindspots" },
-  4: { title: "High-Hurdle Diligence", desc: "Demanding strict moat verification, customer pull and defensibility" },
-  5: { title: "Ruthless Institutional IC", desc: "Zero fluff tolerance, harsh penalties for hand-waving claims, unverified traction or missing moats" },
+export const STRICTNESS_LABELS: Record<number, { title: string; desc: string; behavioralNotice: string }> = {
+  1: { 
+    title: "1 — Exploratory", 
+    desc: "High tolerance for missing information. Prioritizes upside vision and creative market timing.",
+    behavioralNotice: "Assumes early-stage gaps can be resolved post-investment."
+  },
+  2: { 
+    title: "2 — Lenient", 
+    desc: "Constructive feedback balancing upside potential with early technical execution feasibility.",
+    behavioralNotice: "Soft penalization on incomplete data rooms."
+  },
+  3: { 
+    title: "3 — Institutional VC", 
+    desc: "Standard partner-level first-principles diligence across problem, moat, market & unit economics.",
+    behavioralNotice: "Balanced screening with verified claims expectations."
+  },
+  4: { 
+    title: "4 — High-Hurdle", 
+    desc: "Demanding strict moat verification, tangible customer pull, and defensibility against incumbents.",
+    behavioralNotice: "Aggressive discounting of unverified traction claims."
+  },
+  5: { 
+    title: "5 — Adversarial IC", 
+    desc: "Ruthless diligence. Zero fluff tolerance; assume claims require proof; hard thesis disqualification.",
+    behavioralNotice: "Assumes claims require independent proof; instant pass on unverified metrics."
+  },
 };
 
+export const QUICK_CONSTRAINT_SUGGESTIONS = [
+  "Must support on-prem sovereign deployment",
+  "GCC commercialisation / revenue potential required",
+  "No consumer-only products (B2B / Enterprise only)",
+  "Founder must have deep technical / domain background",
+  "Reject generic LLM / API wrappers",
+  "Gross margin must be defensible (>65%)",
+  "Must have at least one enterprise LOI / paid pilot",
+] as const;
+
 export const THESIS_PRESETS: Record<string, ThesisConfig> = {
+  "preset-risin-core": {
+    presetId: "preset-risin-core",
+    presetName: "Risin Core VC (GCC · India DeepTech)",
+    targetDeploymentRegions: ["GCC", "India"],
+    sourcingRndOrigin: "India Engineering / Global Scale",
+    targetStage: "Seed",
+    coreSectorFocus: ["Edge AI & Robotics", "B2B SaaS", "Sovereign AI"],
+    techDepthHurdle: "DeepTech & Hardware",
+    strategicMandate: "Sovereign / Strategic Procurement",
+    diligenceStrictness: 4,
+    customDirectives: "Must support GCC deployment/residency (UAE/Saudi); reject generic LLM wrappers; require high technical moat in engineering or hardware.",
+  },
+  "preset-sovereign-ai": {
+    presetId: "preset-sovereign-ai",
+    presetName: "Sovereign AI GCC (On-Prem Infrastructure)",
+    targetDeploymentRegions: ["GCC"],
+    sourcingRndOrigin: "Global / Agnostic",
+    targetStage: "Seed",
+    coreSectorFocus: ["Sovereign AI", "Edge AI & Robotics", "Energy & Industrial Tech"],
+    techDepthHurdle: "DeepTech & Hardware",
+    strategicMandate: "Sovereign / Strategic Procurement",
+    diligenceStrictness: 5,
+    customDirectives: "Must support on-prem sovereign data residency (UAE DESC / Saudi NCA ECC); zero foreign telemetry leaks; harsh environment thermal tolerance.",
+  },
+  "preset-2": {
+    presetId: "preset-2",
+    presetName: "Global Enterprise AI & B2B SaaS",
+    targetDeploymentRegions: ["North America", "Europe", "Global"],
+    sourcingRndOrigin: "Global / Agnostic",
+    targetStage: "Series A",
+    coreSectorFocus: ["B2B SaaS", "Sovereign AI"],
+    techDepthHurdle: "Applied AI / Deep Software",
+    strategicMandate: "Financial VC Return",
+    diligenceStrictness: 3,
+    customDirectives: "Must demonstrate sustainable net dollar retention (>115%), high workflow switching costs, defensibility against foundation models, and scalable enterprise GTM.",
+  },
+  "preset-3": {
+    presetId: "preset-3",
+    presetName: "Climate & Industrial Hardware",
+    targetDeploymentRegions: ["GCC", "North America", "Europe", "Global"],
+    sourcingRndOrigin: "Global / Agnostic",
+    targetStage: "Seed",
+    coreSectorFocus: ["ClimateTech", "Energy & Industrial Tech"],
+    techDepthHurdle: "DeepTech & Hardware",
+    strategicMandate: "Sovereign / Strategic Procurement",
+    diligenceStrictness: 4,
+    customDirectives: "Must have verified field pilot or industrial bench test; clear customer payback timeline (<12 mos); resilient operations in physical field conditions.",
+  },
   "preset-general": {
     presetId: "preset-general",
-    presetName: "General Discovery (Unknown / Sector-Agnostic Startup)",
+    presetName: "General Discovery (Sector-Agnostic First Principles)",
     targetDeploymentRegions: ["Global"],
     sourcingRndOrigin: "Global / Agnostic",
     targetStage: "Pre-Seed to Seed",
@@ -64,54 +142,18 @@ export const THESIS_PRESETS: Record<string, ThesisConfig> = {
     diligenceStrictness: 3,
     customDirectives: "",
   },
-  "preset-1": {
-    presetId: "preset-1",
-    presetName: "Preset 1: India-GCC DeepTech & Sovereign AI",
-    targetDeploymentRegions: ["GCC", "India"],
-    sourcingRndOrigin: "India Engineering / Global Scale",
-    targetStage: "Seed",
-    coreSectorFocus: ["Edge AI & Robotics", "Sovereign AI", "Energy & Industrial Tech"],
-    techDepthHurdle: "DeepTech & Hardware",
-    strategicMandate: "Sovereign / Strategic Procurement",
-    diligenceStrictness: 4,
-    customDirectives: "Must support on-prem / sovereign data residency (UAE DESC / Saudi NCA ECC); verify physical-to-software coupling and thermal/sand harsh environment durability; reject generic LLM wrappers.",
-  },
-  "preset-2": {
-    presetId: "preset-2",
-    presetName: "Preset 2: Global Enterprise AI & B2B SaaS",
-    targetDeploymentRegions: ["North America", "Europe", "Global"],
-    sourcingRndOrigin: "Global / Agnostic",
-    targetStage: "Series A",
-    coreSectorFocus: ["B2B SaaS", "Sovereign AI"],
-    techDepthHurdle: "Applied AI / Deep Software",
-    strategicMandate: "Financial VC Return",
-    diligenceStrictness: 3,
-    customDirectives: "Must demonstrate sustainable net dollar retention (>115%), high workflow switching costs, defensibility against foundation model platforms, and scalable GTM.",
-  },
-  "preset-3": {
-    presetId: "preset-3",
-    presetName: "Preset 3: Climate & Industrial Hardware",
-    targetDeploymentRegions: ["GCC", "North America", "Europe", "Global"],
-    sourcingRndOrigin: "Global / Agnostic",
-    targetStage: "Seed",
-    coreSectorFocus: ["ClimateTech", "Energy & Industrial Tech"],
-    techDepthHurdle: "DeepTech & Hardware",
-    strategicMandate: "Sovereign / Strategic Procurement",
-    diligenceStrictness: 4,
-    customDirectives: "Must have verified field pilot or industrial bench test; clear customer payback timeline; resilient operations in physical field conditions.",
-  },
   "custom": {
     presetId: "custom",
-    presetName: "Custom Configuration",
-    targetDeploymentRegions: ["Global"],
+    presetName: "Custom Mandate",
+    targetDeploymentRegions: ["GCC", "India", "Global"],
     sourcingRndOrigin: "Global / Agnostic",
-    targetStage: "Pre-Seed to Seed",
+    targetStage: "Seed",
     coreSectorFocus: ["B2B SaaS", "Edge AI & Robotics"],
-    techDepthHurdle: "Pure Software / Agnostic",
+    techDepthHurdle: "Applied AI / Deep Software",
     strategicMandate: "Financial VC Return",
     diligenceStrictness: 3,
     customDirectives: "",
   },
 };
 
-export const DEFAULT_THESIS_CONFIG: ThesisConfig = THESIS_PRESETS["preset-general"];
+export const DEFAULT_THESIS_CONFIG: ThesisConfig = THESIS_PRESETS["preset-risin-core"] || THESIS_PRESETS["preset-general"];
